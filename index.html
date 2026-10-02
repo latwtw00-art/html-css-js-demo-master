@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HTML-CSS-JS-Demo - Full Interactive Web Engineering Studio, Live Code Playground, and Core Web Fundamentals by Md. Keum.">
+    <title>HTML-CSS-JS Demo Master - Web Engineering & Interactive Studio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            primary: '#4CAF50'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- JSZip for dynamic client-side project zip generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.4); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(100, 116, 139, 0.6); }
+
+        .editor-textarea {
+            tab-size: 4;
+            white-space: pre;
+            overflow-wrap: normal;
+            overflow-x: auto;
+        }
+
+        /* Glassmorphism effects */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        
+        .code-preview-frame {
+            background: #ffffff;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 flex flex-col min-h-screen font-sans antialiased selection:bg-brand-500 selection:text-white transition-colors duration-200">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white font-black text-xl shadow-md shadow-brand-500/20">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-slate-900 via-brand-700 to-emerald-600 dark:from-white dark:via-emerald-400 dark:to-brand-400 bg-clip-text text-transparent">HTML-CSS-JS Demo</span>
+                            <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">v5.1.0 Ready</span>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Full Web Development Sandbox & Workspace</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex items-center space-x-1">
+                    <button onclick="switchAppTab('studio')" id="nav-btn-studio" class="nav-tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors bg-brand-50 text-brand-700 dark:bg-brand-950/70 dark:text-brand-300">
+                        <i class="fa-solid fa-laptop-code mr-1.5"></i>Live IDE Studio
+                    </button>
+                    <button onclick="switchAppTab('preview')" id="nav-btn-preview" class="nav-tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
+                        <i class="fa-solid fa-display mr-1.5"></i>Standalone Demo
+                    </button>
+                    <button onclick="switchAppTab('lessons')" id="nav-btn-lessons" class="nav-tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
+                        <i class="fa-solid fa-graduation-cap mr-1.5"></i>Fundamentals Lab
+                    </button>
+                    <button onclick="switchAppTab('security')" id="nav-btn-security" class="nav-tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
+                        <i class="fa-solid fa-shield-halved mr-1.5"></i>Security & Docs
+                    </button>
+                </nav>
+
+                <!-- Action Controls -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="runLiveCode()" title="Run Code (Ctrl + Enter)" class="inline-flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white font-medium text-xs sm:text-sm px-3.5 py-2 rounded-lg shadow-sm shadow-brand-600/30 transition-all transform active:scale-95">
+                        <i class="fa-solid fa-play text-xs"></i>
+                        <span class="hidden xs:inline">Run Code</span>
+                    </button>
+
+                    <button onclick="downloadProjectZip()" title="Export all repository files as ZIP" class="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs sm:text-sm px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 transition">
+                        <i class="fa-solid fa-download"></i>
+                        <span class="hidden sm:inline">Export ZIP</span>
+                    </button>
+
+                    <a href="https://github.com/mdkeum/HTML-CSS-JS-Demo" target="_blank" rel="noopener noreferrer" title="View Source on GitHub" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition">
+                        <i class="fa-brands fa-github text-lg"></i>
+                    </a>
+
+                    <button onclick="toggleDarkMode()" id="theme-toggle-btn" title="Toggle Theme" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition">
+                        <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+                        <i class="fa-solid fa-sun text-lg hidden dark:block text-amber-400"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav bar -->
+        <div class="md:hidden flex items-center justify-around border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 py-1.5 px-2 text-xs">
+            <button onclick="switchAppTab('studio')" class="mobile-nav-btn py-1 px-2 rounded font-medium text-brand-600 dark:text-brand-400"><i class="fa-solid fa-laptop-code block mx-auto text-sm mb-0.5"></i>Studio</button>
+            <button onclick="switchAppTab('preview')" class="mobile-nav-btn py-1 px-2 rounded font-medium text-slate-600 dark:text-slate-400"><i class="fa-solid fa-display block mx-auto text-sm mb-0.5"></i>Demo</button>
+            <button onclick="switchAppTab('lessons')" class="mobile-nav-btn py-1 px-2 rounded font-medium text-slate-600 dark:text-slate-400"><i class="fa-solid fa-graduation-cap block mx-auto text-sm mb-0.5"></i>Lab</button>
+            <button onclick="switchAppTab('security')" class="mobile-nav-btn py-1 px-2 rounded font-medium text-slate-600 dark:text-slate-400"><i class="fa-solid fa-shield-halved block mx-auto text-sm mb-0.5"></i>Docs</button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 flex flex-col gap-6">
+
+        <!-- ============================================================== -->
+        <!-- TAB 1: LIVE IDE STUDIO & PLAYGROUND -->
+        <!-- ============================================================== -->
+        <section id="view-studio" class="tab-view flex flex-col lg:flex-row gap-4 flex-1 h-full min-h-[700px]">
+            
+            <!-- Left: File Explorer & Code Editor -->
+            <div class="w-full lg:w-1/2 flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                
+                <!-- Editor Top Bar & File Tabs -->
+                <div class="bg-slate-100 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-2 pt-2 overflow-x-auto select-none">
+                    <div class="flex items-center gap-1">
+                        <button onclick="switchCodeFile('index.html')" id="file-tab-index.html" class="file-tab active inline-flex items-center gap-2 px-3 py-2 rounded-t-lg font-mono text-xs font-semibold bg-white dark:bg-slate-900 text-brand-600 dark:text-brand-400 border-t-2 border-brand-500 border-x border-slate-200 dark:border-slate-800 shadow-sm">
+                            <i class="fa-brands fa-html5 text-orange-500 text-sm"></i> index.html
+                        </button>
+                        <button onclick="switchCodeFile('styles.css')" id="file-tab-styles.css" class="file-tab inline-flex items-center gap-2 px-3 py-2 rounded-t-lg font-mono text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition">
+                            <i class="fa-brands fa-css3-alt text-blue-500 text-sm"></i> styles.css
+                        </button>
+                        <button onclick="switchCodeFile('script.js')" id="file-tab-script.js" class="file-tab inline-flex items-center gap-2 px-3 py-2 rounded-t-lg font-mono text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition">
+                            <i class="fa-brands fa-js text-yellow-500 text-sm"></i> script.js
+                        </button>
+                        <button onclick="switchCodeFile('README.md')" id="file-tab-README.md" class="file-tab inline-flex items-center gap-2 px-3 py-2 rounded-t-lg font-mono text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition">
+                            <i class="fa-solid fa-book-bookmark text-indigo-400 text-sm"></i> README.md
+                        </button>
+                        <button onclick="switchCodeFile('SECURITY.md')" id="file-tab-SECURITY.md" class="file-tab inline-flex items-center gap-2 px-3 py-2 rounded-t-lg font-mono text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition">
+                            <i class="fa-solid fa-shield text-emerald-500 text-sm"></i> SECURITY.md
+                        </button>
+                    </div>
+
+                    <!-- Quick Preset Dropdown -->
+                    <div class="hidden sm:flex items-center gap-2 pb-1 pr-1">
+                        <label class="text-[11px] text-slate-400 font-medium">Template:</label>
+                        <select id="preset-selector" onchange="loadPresetTemplate(this.value)" class="text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-md px-2 py-1 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            <option value="original">Original Master</option>
+                            <option value="interactive">Interactive Counter App</option>
+                            <option value="glassmorphism">Modern Glassmorphism UI</option>
+                            <option value="formValidation">Dynamic Form Validation</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Editor Actions Toolbar -->
+                <div class="px-4 py-2 bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                    <div class="flex items-center gap-3">
+                        <span id="editor-active-file-indicator" class="font-mono text-slate-700 dark:text-slate-300 font-semibold flex items-center gap-1.5">
+                            <i class="fa-regular fa-file-code text-brand-500"></i> index.html
+                        </span>
+                        <span class="text-slate-300 dark:text-slate-700">|</span>
+                        <span id="editor-char-counter">0 chars</span>
+                        <span class="hidden sm:inline text-slate-300 dark:text-slate-700">|</span>
+                        <span class="hidden sm:inline text-emerald-600 dark:text-emerald-400"><i class="fa-solid fa-circle-check text-[10px] mr-1"></i>Auto-saved to Browser Storage</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="formatActiveCode()" title="Reformat Code" class="hover:text-brand-600 dark:hover:text-brand-400 p-1">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Format
+                        </button>
+                        <button onclick="resetCurrentFileToDefault()" title="Reset current file to repo default" class="hover:text-rose-500 p-1">
+                            <i class="fa-solid fa-rotate-left mr-1"></i>Reset
+                        </button>
+                        <button onclick="copyCodeToClipboard()" title="Copy active code" class="hover:text-brand-600 dark:hover:text-brand-400 p-1">
+                            <i class="fa-regular fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Code Editor Textarea -->
+                <div class="relative flex-1 bg-white dark:bg-slate-900 min-h-[350px]">
+                    <textarea id="code-editor" spellcheck="false" class="editor-textarea w-full h-full p-4 font-mono text-sm leading-relaxed text-slate-800 dark:text-slate-100 bg-transparent border-0 resize-none focus:outline-none focus:ring-0" placeholder="Type your code here..."></textarea>
+                </div>
+
+                <!-- Editor Bottom Status Bar -->
+                <div class="bg-slate-100 dark:bg-slate-950 px-4 py-1.5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+                    <div class="flex items-center gap-3">
+                        <span>UTF-8</span>
+                        <span>LF</span>
+                        <span id="status-language-tag">HTML</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span>Ctrl + S to Run</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Live Output Viewport & Interactive Console -->
+            <div class="w-full lg:w-1/2 flex flex-col gap-4">
+                
+                <!-- Live Browser Window Frame -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col flex-1 min-h-[420px]">
+                    
+                    <!-- Browser Chrome Header -->
+                    <div class="bg-slate-100 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+                            <span class="ml-2 font-mono text-xs text-slate-500 hidden sm:inline">Preview Sandbox</span>
+                        </div>
+
+                        <!-- Pseudo Address Bar -->
+                        <div class="flex-1 max-w-sm mx-4">
+                            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-md px-3 py-1 text-xs text-slate-600 dark:text-slate-300 font-mono flex items-center gap-2 truncate shadow-inner">
+                                <i class="fa-solid fa-lock text-emerald-500 text-[10px]"></i>
+                                <span class="truncate">http://localhost:3000/demo/index.html</span>
+                            </div>
+                        </div>
+
+                        <!-- Viewport Tools -->
+                        <div class="flex items-center gap-1.5 text-slate-500">
+                            <button onclick="setPreviewDevice('desktop')" title="Desktop View" id="btn-device-desktop" class="p-1.5 hover:text-brand-600 rounded bg-slate-200/60 dark:bg-slate-800 text-brand-600 dark:text-brand-400"><i class="fa-solid fa-desktop"></i></button>
+                            <button onclick="setPreviewDevice('tablet')" title="Tablet View" id="btn-device-tablet" class="p-1.5 hover:text-brand-600 rounded"><i class="fa-solid fa-tablet-screen-button"></i></button>
+                            <button onclick="setPreviewDevice('mobile')" title="Mobile View" id="btn-device-mobile" class="p-1.5 hover:text-brand-600 rounded"><i class="fa-solid fa-mobile-screen"></i></button>
+                            <button onclick="reloadPreviewFrame()" title="Reload Frame" class="p-1.5 hover:text-brand-600 rounded ml-1"><i class="fa-solid fa-arrows-rotate"></i></button>
+                            <button onclick="openPreviewInNewWindow()" title="Open Preview in New Tab" class="p-1.5 hover:text-brand-600 rounded"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Sandbox Iframe Container -->
+                    <div id="preview-container" class="flex-1 bg-slate-200/50 dark:bg-slate-950 flex items-center justify-center p-2 overflow-auto transition-all">
+                        <iframe id="live-preview-frame" sandbox="allow-scripts allow-modals allow-forms allow-same-origin" class="w-full h-full bg-white rounded-lg shadow-sm border border-slate-200 dark:border-slate-800"></iframe>
+                    </div>
+                </div>
+
+                <!-- Live Integrated Console -->
+                <div class="bg-slate-900 text-slate-200 rounded-2xl border border-slate-800 shadow-sm p-3 flex flex-col h-44">
+                    <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-xs">
+                        <div class="flex items-center gap-2 font-mono">
+                            <i class="fa-solid fa-terminal text-brand-400"></i>
+                            <span class="font-bold">Console Output & Logger</span>
+                            <span id="console-badge-count" class="bg-slate-800 text-slate-300 px-1.5 py-0.2 rounded text-[10px]">0 logs</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="executeConsoleCustomInput()" class="text-brand-400 hover:text-brand-300 text-xs">
+                                <i class="fa-solid fa-play mr-1"></i>Eval
+                            </button>
+                            <button onclick="clearConsoleLog()" class="hover:text-rose-400 text-slate-400 text-xs" title="Clear Console">
+                                <i class="fa-solid fa-ban"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Console Messages Area -->
+                    <div id="console-logs-list" class="flex-1 font-mono text-xs overflow-y-auto space-y-1 text-slate-300">
+                        <div class="text-slate-500 italic text-[11px]">// Interactive Web Console ready. System outputs and window.alert notifications will appear here.</div>
+                    </div>
+
+                    <!-- Quick Console Interactive Input -->
+                    <form onsubmit="handleConsoleSubmit(event)" class="mt-2 flex items-center gap-2 pt-1 border-t border-slate-800">
+                        <span class="text-brand-400 text-xs font-mono font-bold">></span>
+                        <input type="text" id="console-input" placeholder="Type JavaScript expression here (e.g. alert('Hello World!') or 2 + 2)..." class="flex-1 bg-transparent text-xs font-mono text-white focus:outline-none placeholder:text-slate-600">
+                        <button type="submit" class="text-slate-400 hover:text-white text-xs"><i class="fa-solid fa-arrow-turn-down"></i></button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ============================================================== -->
+        <!-- TAB 2: STANDALONE ORIGINAL MASTER DEMO WITH LIVE CONTROLS -->
+        <!-- ============================================================== -->
+        <section id="view-preview" class="tab-view hidden flex flex-col gap-6">
+            
+            <div class="bg-gradient-to-r from-brand-600 via-emerald-600 to-teal-700 text-white rounded-2xl p-6 shadow-lg relative overflow-hidden">
+                <div class="absolute right-0 top-0 -mt-8 -mr-8 w-56 h-56 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-white/20 text-white text-xs px-2.5 py-1 rounded-full font-semibold mb-3 inline-block">Repository Core Blueprint</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mb-2">Original HTML-CSS-JS Web Layout</h2>
+                    <p class="text-white/80 text-sm sm:text-base leading-relaxed">
+                        This view showcases the canonical implementation from <span class="font-mono underline">index.html</span>, <span class="font-mono underline">styles.css</span>, and <span class="font-mono underline">script.js</span> by <strong>Md. Keum</strong>, featuring real-time visual property adjusters.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interactive Customization Panel for the Original Webpage -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Header Color</label>
+                    <div class="flex items-center gap-3">
+                        <input type="color" id="ctrl-header-color" value="#4CAF50" oninput="updateOriginalDemoStyles()" class="w-10 h-10 rounded cursor-pointer border border-slate-300">
+                        <input type="text" id="ctrl-header-color-text" value="#4CAF50" oninput="syncColorInput(this.value, 'ctrl-header-color')" class="font-mono text-xs border border-slate-300 dark:border-slate-700 rounded px-2 py-1.5 w-24 bg-slate-50 dark:bg-slate-800">
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Footer Color</label>
+                    <div class="flex items-center gap-3">
+                        <input type="color" id="ctrl-footer-color" value="#333333" oninput="updateOriginalDemoStyles()" class="w-10 h-10 rounded cursor-pointer border border-slate-300">
+                        <input type="text" id="ctrl-footer-color-text" value="#333333" oninput="syncColorInput(this.value, 'ctrl-footer-color')" class="font-mono text-xs border border-slate-300 dark:border-slate-700 rounded px-2 py-1.5 w-24 bg-slate-50 dark:bg-slate-800">
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Site Title</label>
+                    <input type="text" id="ctrl-site-title" value="Site Title" oninput="updateOriginalDemoContent()" class="w-full text-xs font-medium border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 bg-slate-50 dark:bg-slate-800">
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Actions</label>
+                    <div class="flex items-center gap-2">
+                        <button onclick="triggerOriginalAlert()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition shadow-sm">
+                            <i class="fa-solid fa-bell mr-1"></i>Trigger Alert
+                        </button>
+                        <button onclick="resetOriginalDemo()" title="Reset" class="p-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 transition">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Rendered Original Project Container -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 shadow-md overflow-hidden flex flex-col min-h-[500px] relative">
+                
+                <!-- Demo Header Component -->
+                <div id="demo-rendered-header" class="text-white py-4 px-6 text-center transition-colors" style="background-color: #4CAF50;">
+                    <h1 id="demo-rendered-title" class="text-2xl sm:text-3xl font-bold font-sans tracking-tight">Site Title</h1>
+                </div>
+
+                <!-- Demo Main Content -->
+                <div class="p-8 sm:p-12 flex-1 font-sans text-slate-800 dark:text-slate-200">
+                    <div class="max-w-2xl mx-auto space-y-4">
+                        <h2 id="demo-rendered-welcome" class="text-2xl font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">Welcome to My Page!</h2>
+                        <p id="demo-rendered-paragraph" class="text-slate-600 dark:text-slate-300 leading-relaxed text-base">
+                            This is a sample paragraph. You can replace this with your content.
+                        </p>
+                        
+                        <div class="mt-6 p-4 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-400 space-y-2">
+                            <p class="font-semibold text-slate-800 dark:text-slate-200"><i class="fa-solid fa-info-circle text-brand-600 mr-1.5"></i>Original Script Behavior:</p>
+                            <code class="block bg-white dark:bg-slate-900 p-2.5 rounded font-mono text-brand-600 dark:text-brand-400 border border-slate-200 dark:border-slate-700">
+                                window.onload = function() { alert("Welcome to Your Page!"); };
+                            </code>
+                            <p>This alert executes natively upon mounting or when triggered from the control panel.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo Footer Component (Styled exactly as original CSS) -->
+                <div id="demo-rendered-footer" class="text-white py-3 px-4 text-center font-sans text-xs transition-colors" style="background-color: #333333;">
+                    <p id="demo-rendered-footer-text">&copy; 2024 Your Name. All rights reserved.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================== -->
+        <!-- TAB 3: WEB FUNDAMENTALS & COMPONENT LAB -->
+        <!-- ============================================================== -->
+        <section id="view-lessons" class="tab-view hidden flex flex-col gap-6">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+                <div class="flex items-center justify-between flex-wrap gap-4 mb-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+                    <div>
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-cubes-stacked text-brand-600"></i>
+                            Interactive Web Development Fundamentals Lab
+                        </h2>
+                        <p class="text-sm text-slate-500">Explore the 3 core pillars of frontend development: HTML Structure, CSS Styling, and JavaScript Logic.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="switchLessonSubtab('html')" id="btn-lesson-html" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-600 text-white">1. HTML Structure</button>
+                        <button onclick="switchLessonSubtab('css')" id="btn-lesson-css" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">2. CSS Styling</button>
+                        <button onclick="switchLessonSubtab('js')" id="btn-lesson-js" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">3. JavaScript Events</button>
+                    </div>
+                </div>
+
+                <!-- Sub-tab 1: HTML Architecture -->
+                <div id="lesson-tab-html" class="lesson-subtab space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800 p-4 rounded-xl">
+                            <div class="text-orange-600 dark:text-orange-400 font-bold text-sm mb-1 flex items-center gap-1.5">
+                                <i class="fa-brands fa-html5 text-base"></i> <header> Landmark
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Contains introductory content, site titles, branding logos, and top-level navigation links.
+                            </p>
+                        </div>
+                        <div class="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 p-4 rounded-xl">
+                            <div class="text-blue-600 dark:text-blue-400 font-bold text-sm mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-layer-group text-base"></i> <main> Container
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Houses the primary, unique content of the document. Each page should contain exactly one main tag.
+                            </p>
+                        </div>
+                        <div class="bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 p-4 rounded-xl">
+                            <div class="text-slate-800 dark:text-slate-200 font-bold text-sm mb-1 flex items-center gap-1.5">
+                                <i class="fa-regular fa-copyright text-base"></i> <footer> Section
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Standard repository footer providing copyright notice, author credits, licensing, and bottom navigational items.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive DOM Tree Visualizer -->
+                    <div class="border border-slate-200 dark:border-slate-800 rounded-xl p-4 bg-slate-50 dark:bg-slate-950">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Live DOM Inspector:</h4>
+                        <div class="font-mono text-xs space-y-1.5 bg-white dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-800 shadow-inner">
+                            <div class="text-purple-600 dark:text-purple-400"><!DOCTYPE html></div>
+                            <div class="text-blue-600 dark:text-blue-400"><html></div>
+                            <div class="pl-4 text-blue-600 dark:text-blue-400"><head> <span class="text-slate-400"><!-- meta charset, viewport, title, link rel="stylesheet" --></span> </head></div>
+                            <div class="pl-4 text-blue-600 dark:text-blue-400"><body></div>
+                            <div class="pl-8 text-emerald-600 dark:text-emerald-400"><header> <span class="text-slate-800 dark:text-slate-200"><h1>Site Title</h1></span> </header></div>
+                            <div class="pl-8 text-emerald-600 dark:text-emerald-400"><main> <span class="text-slate-800 dark:text-slate-200"><h2>Welcome to My Page!</h2> <p>...</p></span> </main></div>
+                            <div class="pl-8 text-emerald-600 dark:text-emerald-400"><footer> <span class="text-slate-800 dark:text-slate-200"><p>&copy; 2024 Your Name. All rights reserved.</p></span> </footer></div>
+                            <div class="pl-8 text-yellow-600 dark:text-yellow-400"><script src="script.js"></script></div>
+                            <div class="pl-4 text-blue-600 dark:text-blue-400">
+
+<!-- FlashLite Natural Link & Navigation Engine -->
+<script id="flashlite-real-link-engine">
+(function() {
+  'use strict';
+
+  function setupNaturalLinks() {
+    var links = document.querySelectorAll('a[href]');
+    
+    links.forEach(function(el) {
+      if (el.dataset.flashliteHandled === 'true') return;
+      el.dataset.flashliteHandled = 'true';
+
+      var href = (el.getAttribute('href') || '').trim();
+
+      // For external URLs: ensure safe opening in new tab
+      if (/^https?:\/\//i.test(href)) {
+        el.setAttribute('target', '_blank');
+        el.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
+  }
+
+  // Smooth anchor scrolling without preventing normal JS behavior
+  document.addEventListener('click', function(e) {
+    var target = e.target;
+    if (!(target instanceof Element)) return;
+    var link = target.closest('a[href]');
+    if (!link) return;
+
+    var href = (link.getAttribute('href') || '').trim();
+
+    // Anchor links (#id)
+    if (href.startsWith('#') && href.length > 1) {
+      var targetId = href.slice(1);
+      var targetElem = document.getElementById(targetId) || document.querySelector('[name="' + targetId + '"]');
+      if (targetElem) {
+        e.preventDefault();
+        targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+
+    // External links: open in new tab if not already doing so
+    if (/^https?:\/\//i.test(href)) {
+      e.preventDefault();
+      window.open(href, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    // Notice: For "#", "javascript:void(0)", buttons, or relative links,
+    // do NOT call e.preventDefault()! Allow the site's own JavaScript and components to execute naturally.
+  }, false);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupNaturalLinks);
+  } else {
+    setupNaturalLinks();
+  }
+
+  try {
+    var observer = new MutationObserver(function() { setupNaturalLinks(); });
+    observer.observe(document.documentElement || document.body, { childList: true, subtree: true });
+  } catch(e) {}
+})();
+</script>
+
+</body></div>
+                            <div class="text-blue-600 dark:text-blue-400"></html></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-tab 2: CSS Styling Engine -->
+                <div id="lesson-tab-css" class="lesson-subtab hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200">Interactive CSS Box Model Playground</h4>
+                            
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium">Header Padding (<span id="lbl-pad-val">10px</span>)</span>
+                                    </div>
+                                    <input type="range" min="0" max="40" value="10" oninput="document.getElementById('lbl-pad-val').textContent=this.value+'px'; document.getElementById('demo-css-box').style.padding=this.value+'px'" class="w-full accent-brand-600">
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium">Border Radius (<span id="lbl-rad-val">8px</span>)</span>
+                                    </div>
+                                    <input type="range" min="0" max="30" value="8" oninput="document.getElementById('lbl-rad-val').textContent=this.value+'px'; document.getElementById('demo-css-box').style.borderRadius=this.value+'px'" class="w-full accent-brand-600">
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium">Elevation Shadow (<span id="lbl-shd-val">Medium</span>)</span>
+                                    </div>
+                                    <input type="range" min="0" max="3" value="1" oninput="applyShadowStep(this.value)" class="w-full accent-brand-600">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Box Result -->
+                        <div class="flex items-center justify-center p-6 bg-slate-100 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <div id="demo-css-box" class="bg-brand-600 text-white font-medium p-4 rounded-lg shadow-md text-center transition-all">
+                                <p class="text-sm font-bold">Dynamic CSS Target</p>
+                                <p class="text-xs opacity-90">Live Box-Model Render</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-tab 3: JavaScript Engine & Events -->
+                <div id="lesson-tab-js" class="lesson-subtab hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200">Interactive Event Listeners Workshop</h4>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">
+                                Experiment with various event hooks from JavaScript (`click`, `input`, `mousemove`, `storage`).
+                            </p>
+
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="triggerJsDemoEvent('click')" class="px-3 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-lg shadow-sm">
+                                    <i class="fa-solid fa-hand-pointer mr-1"></i> Trigger click
+                                </button>
+                                <button onclick="triggerJsDemoEvent('fetch')" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm">
+                                    <i class="fa-solid fa-cloud-arrow-down mr-1"></i> Async Fetch Simulation
+                                </button>
+                                <button onclick="triggerJsDemoEvent('time')" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-sm">
+                                    <i class="fa-regular fa-clock mr-1"></i> Get Date/Time
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 text-slate-200 p-4 rounded-xl font-mono text-xs border border-slate-800 flex flex-col justify-between">
+                            <div class="text-slate-400 font-bold mb-2 pb-1 border-b border-slate-800 flex items-center justify-between">
+                                <span>Event Stream Output</span>
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            </div>
+                            <div id="js-event-stream" class="h-28 overflow-y-auto space-y-1 text-[11px] text-brand-400">
+                                <div>[System] JavaScript Engine Loaded & Ready.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ============================================================== -->
+        <!-- TAB 4: SECURITY POLICY, METADATA & REPOSITORY SPECS -->
+        <!-- ============================================================== -->
+        <section id="view-security" class="tab-view hidden flex flex-col gap-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left 2 Cols: Security Policy & Vulnerability Reporting -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+                        <div class="flex items-center gap-3 pb-4 mb-4 border-b border-slate-200 dark:border-slate-800">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Security Policy & Version Support</h3>
+                                <p class="text-xs text-slate-500">Rendered verbatim from repository `SECURITY.md` manifest</p>
+                            </div>
+                        </div>
+
+                        <!-- Version Matrix Table -->
+                        <div class="overflow-x-auto mb-6">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300">
+                                        <th class="py-2.5 px-4 rounded-l-lg font-semibold">Version Branch</th>
+                                        <th class="py-2.5 px-4 font-semibold">Security Update Status</th>
+                                        <th class="py-2.5 px-4 rounded-r-lg font-semibold">Operational State</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
+                                    <tr>
+                                        <td class="py-3 px-4 font-bold text-slate-900 dark:text-white">5.1.x</td>
+                                        <td class="py-3 px-4 text-emerald-600 dark:text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check mr-1.5"></i> Supported</td>
+                                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-sans">Active Release</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 text-slate-500">5.0.x</td>
+                                        <td class="py-3 px-4 text-rose-500 font-semibold"><i class="fa-solid fa-circle-xmark mr-1.5"></i> Unsupported</td>
+                                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-[10px] font-sans">End of Life</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 font-bold text-slate-900 dark:text-white">4.0.x</td>
+                                        <td class="py-3 px-4 text-emerald-600 dark:text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check mr-1.5"></i> Supported</td>
+                                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 text-[10px] font-sans">Maintenance (LTS)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 text-slate-500">< 4.0</td>
+                                        <td class="py-3 px-4 text-rose-500 font-semibold"><i class="fa-solid fa-circle-xmark mr-1.5"></i> Unsupported</td>
+                                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-[10px] font-sans">Deprecated</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Interactive Vulnerability Submission Form -->
+                        <div class="bg-slate-50 dark:bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-bug text-rose-500"></i>
+                                Report a Security Vulnerability
+                            </h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                                Use this genuine form to test client-side payload validation and simulate responsible disclosure dispatch.
+                            </p>
+
+                            <form onsubmit="handleVulnerabilitySubmit(event)" class="space-y-3">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Target Version</label>
+                                        <select id="vuln-version" class="w-full text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2 focus:ring-1 focus:ring-brand-500">
+                                            <option value="5.1.x">5.1.x (Current)</option>
+                                            <option value="4.0.x">4.0.x (LTS)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Severity Rating</label>
+                                        <select id="vuln-severity" class="w-full text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2 focus:ring-1 focus:ring-brand-500">
+                                            <option value="Low">Low (Informational)</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="High">High (Urgent)</option>
+                                            <option value="Critical">Critical</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Vulnerability Description</label>
+                                    <textarea id="vuln-details" rows="3" required placeholder="Provide vulnerability overview, impact, and steps to reproduce..." class="w-full text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 focus:ring-1 focus:ring-brand-500"></textarea>
+                                </div>
+
+                                <button type="submit" class="w-full bg-slate-900 dark:bg-brand-600 hover:bg-slate-800 dark:hover:bg-brand-700 text-white text-xs font-bold py-2.5 px-4 rounded-lg shadow transition">
+                                    <i class="fa-solid fa-paper-plane mr-1.5"></i> Submit Advisory Report
+                                </button>
+                            </form>
+                            <div id="vuln-feedback-msg" class="hidden mt-3 p-2.5 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right 1 Col: Repository Metadata & Author Information -->
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400">Repository Details</h3>
+
+                        <div class="space-y-3 text-xs">
+                            <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                <span class="text-slate-500">Repository Name</span>
+                                <span class="font-mono font-semibold text-slate-800 dark:text-slate-200">HTML-CSS-JS-Demo</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                <span class="text-slate-500">Author</span>
+                                <span class="font-semibold text-brand-600 dark:text-brand-400">Md. Keum</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                <span class="text-slate-500">License</span>
+                                <span class="font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-[11px]">MIT License</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                                <span class="text-slate-500">Architecture</span>
+                                <span class="text-slate-700 dark:text-slate-300 font-medium">Modular Web Standard</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="text-slate-500">Bundle Status</span>
+                                <span class="text-emerald-600 font-bold"><i class="fa-solid fa-check mr-1"></i>100% Client Compiled</span>
+                            </div>
+                        </div>
+
+                        <!-- Git Clone Assistant -->
+                        <div class="pt-2">
+                            <label class="block text-[11px] font-bold text-slate-500 mb-1">Clone Command</label>
+                            <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-950 p-2 rounded-lg border border-slate-200 dark:border-slate-800 font-mono text-[11px] overflow-hidden">
+                                <span class="truncate flex-1 text-slate-700 dark:text-slate-300">git clone https://github.com/mdkeum/HTML-CSS-JS-Demo.git</span>
+                                <button onclick="copyCloneCommand()" title="Copy command" class="text-slate-500 hover:text-brand-600 p-1"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Single File Download Buttons -->
+                        <div class="pt-2">
+                            <label class="block text-[11px] font-bold text-slate-500 mb-2">Download Individual Source Files</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="downloadSingleFile('index.html')" class="p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-left truncate"><i class="fa-brands fa-html5 text-orange-500 mr-1"></i> index.html</button>
+                                <button onclick="downloadSingleFile('styles.css')" class="p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-left truncate"><i class="fa-brands fa-css3-alt text-blue-500 mr-1"></i> styles.css</button>
+                                <button onclick="downloadSingleFile('script.js')" class="p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-left truncate"><i class="fa-brands fa-js text-yellow-500 mr-1"></i> script.js</button>
+                                <button onclick="downloadSingleFile('README.md')" class="p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-left truncate"><i class="fa-solid fa-file-lines text-indigo-400 mr-1"></i> README.md</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Global Floating Toast Notification -->
+    <div id="app-toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs font-medium">
+        <i id="toast-icon" class="fa-solid fa-check-circle text-brand-400 dark:text-brand-600 text-base"></i>
+        <span id="toast-msg">Operation completed successfully.</span>
+    </div>
+
+    <!-- Application Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-auto py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Compiled Standalone Runtime &bull; <strong>HTML-CSS-JS Demo Master</strong> by Md. Keum</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#view-studio" onclick="switchAppTab('studio'); return false;" class="hover:text-brand-600 transition">IDE Studio</a>
+                <a href="#view-preview" onclick="switchAppTab('preview'); return false;" class="hover:text-brand-600 transition">Standalone Demo</a>
+                <a href="#view-lessons" onclick="switchAppTab('lessons'); return false;" class="hover:text-brand-600 transition">Fundamentals Lab</a>
+                <a href="#view-security" onclick="switchAppTab('security'); return false;" class="hover:text-brand-600 transition">Security Policy</a>
+                <a href="https://github.com/mdkeum/HTML-CSS-JS-Demo" target="_blank" rel="noopener noreferrer" class="hover:text-slate-800 dark:hover:text-white transition"><i class="fa-brands fa-github"></i> Repository</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================== -->
+    <!-- REAL EXECUTABLE COMPILER, RUNTIME & INTERACTIVE SCRIPTS -->
+    <!-- ============================================================== -->
+    <script>
+        /**
+         * INITIAL FILE REPOSITORY STORAGE & STATE
+         */
+        const DEFAULT_FILES = {
+            'index.html': `<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A brief description of the page.">
+        <title>Page Title</title>
+        <link rel="stylesheet" href="styles.css"> 
+    </head>
+    <body>
+        <header>
+            <h1>Site Title</h1>
+        </header>
+        
+        <main>
+            <h2>Welcome to My Page!</h2>
+            <p>This is a sample paragraph. You can replace this with your content.</p>
+        </main>
+    
+        <footer>
+            <p>&copy; 2024 Your Name. All rights reserved.</p>
+        </footer>
+    
+        <script src="script.js"><\/script> 
+    </body>
+</html>`,
+
+            'styles.css': `body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 5px 0;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}`,
+
+            'script.js': `window.onload = function() {
+    alert("Welcome to Your Page!");
+};`,
+
+            'README.md': `# HTML-CSS-JS-Demo-Project
+
+**HTML-CSS-JS-Demo** is a basic web development project that demonstrates the fundamental concepts of HTML, CSS, and JavaScript. It includes a simple webpage layout with separate HTML, CSS, and JavaScript files, making it a great starting point for learning web development.
+
+## Features
+- **HTML**: Basic structure for a webpage with header, main content, and footer.
+- **CSS**: External CSS file for styling the page, including layout adjustments and basic styles.
+- **JavaScript**: A sample JavaScript file that can be expanded to add dynamic functionality.
+
+## Project Structure
+HTML-CSS-JS-Demo/
+├── index.html     # Main HTML file
+├── styles.css     # External CSS file for styling
+├── script.js      # External JavaScript file for interactivity
+└── README.md      # This file
+
+## Author
+Md. Keum (MIT License)`,
+
+            'SECURITY.md': `# Security Policy
+
+## Supported Versions
+| Version | Supported          |
+| ------- | ------------------ |
+| 5.1.x   | :white_check_mark: |
+| 5.0.x   | :x:                |
+| 4.0.x   | :white_check_mark: |
+| < 4.0   | :x:                |
+
+## Reporting a Vulnerability
+Please submit advisories directly through the integrated security portal.`
+        };
+
+        // Preset collection for interactive learning
+        const PRESET_TEMPLATES = {
+            original: {
+                'index.html': DEFAULT_FILES['index.html'],
+                'styles.css': DEFAULT_FILES['styles.css'],
+                'script.js': DEFAULT_FILES['script.js']
+            },
+            interactive: {
+                'index.html': `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Counter App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Interactive JavaScript Demo</h1>
+    </header>
+    <main>
+        <h2>Interactive Click Counter</h2>
+        <div class="counter-box">
+            <span id="counter-value">0</span>
+        </div>
+        <div class="btn-group">
+            <button id="btn-dec">- Decrease</button>
+            <button id="btn-reset">Reset</button>
+            <button id="btn-inc">+ Increase</button>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Md. Keum. All rights reserved.</p>
+    </footer>
+    <script src="script.js"><\/script>
+</body>
+</html>`,
+                'styles.css': `body {
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background: #f8fafc;
+}
+header {
+    background: #2563eb;
+    color: white;
+    padding: 16px 0;
+}
+main {
+    padding: 30px 15px;
+}
+.counter-box {
+    font-size: 64px;
+    font-weight: bold;
+    color: #1e293b;
+    margin: 20px 0;
+}
+.btn-group button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    margin: 4px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-group button:hover {
+    background: #1d4ed8;
+}
+footer {
+    background: #0f172a;
+    color: #94a3b8;
+    padding: 8px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}`,
+                'script.js': `let count = 0;
+const counterElem = document.getElementById('counter-value');
+
+document.getElementById('btn-inc').addEventListener('click', () => {
+    count++;
+    counterElem.textContent = count;
+    console.log('Counter increased to:', count);
+});
+
+document.getElementById('btn-dec').addEventListener('click', () => {
+    count--;
+    counterElem.textContent = count;
+    console.log('Counter decreased to:', count);
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+    count = 0;
+    counterElem.textContent = count;
+    console.log('Counter reset to 0');
+});`
+            },
+            glassmorphism: {
+                'index.html': `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Modern Glassmorphism Card</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="glass-card">
+        <div class="avatar">⚡</div>
+        <h2>Modern Web Design</h2>
+        <p>HTML5, CSS3 Glassmorphism and modern JavaScript synthesized seamlessly.</p>
+        <button onclick="alert('Exploration initiated!')">Explore Features</button>
+    </div>
+    <script src="script.js"><\/script>
+</body>
+</html>`,
+                'styles.css': `body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    font-family: system-ui, sans-serif;
+}
+.glass-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 36px 28px;
+    text-align: center;
+    color: white;
+    max-width: 320px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+.avatar {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+h2 {
+    margin: 0 0 10px 0;
+    font-size: 22px;
+}
+p {
+    font-size: 14px;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+button {
+    margin-top: 15px;
+    background: white;
+    color: #4f46e5;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+button:hover {
+    transform: scale(1.05);
+}`,
+                'script.js': `console.log("Glassmorphism interactive card initialized successfully.");`
+            },
+            formValidation: {
+                'index.html': `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Form Validation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Register Account</h2>
+        <form id="reg-form">
+            <div class="form-group">
+                <label>Email Address:</label>
+                <input type="email" id="email-in" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password (min 6 chars):</label>
+                <input type="password" id="pwd-in" required minlength="6">
+            </div>
+            <button type="submit">Create Account</button>
+            <div id="status-box"></div>
+        </form>
+    </div>
+    <script src="script.js"><\/script>
+</body>
+</html>`,
+                'styles.css': `body {
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+.form-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    width: 300px;
+}
+h2 { margin-top: 0; font-size: 20px; color: #1e293b; }
+.form-group { margin-bottom: 15px; }
+label { display: block; font-size: 12px; margin-bottom: 5px; color: #64748b; font-weight: bold; }
+input { width: 100%; box-sizing: border-box; padding: 9px; border: 1px solid #cbd5e1; border-radius: 6px; }
+button { width: 100%; background: #16a34a; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+button:hover { background: #15803d; }
+#status-box { margin-top: 15px; font-size: 12px; font-weight: bold; text-align: center; }`,
+                'script.js': `document.getElementById('reg-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('email-in').value;
+    const pwd = document.getElementById('pwd-in').value;
+    const statusBox = document.getElementById('status-box');
+
+    if (pwd.length < 6) {
+        statusBox.style.color = '#ef4444';
+        statusBox.textContent = 'Password must be at least 6 chars!';
+        return;
+    }
+
+    statusBox.style.color = '#16a34a';
+    statusBox.textContent = 'Account successfully registered for ' + email + '!';
+    console.log('Registration submitted:', { email });
+});`
+            }
+        };
+
+        // File store state
+        let currentFiles = {};
+        let activeFile = 'index.html';
+        let consoleLogs = [];
+
+        /**
+         * Initialize storage on load
+         */
+        function initApp() {
+            // Load saved files from localStorage or seed with repository defaults
+            const saved = localStorage.getItem('html_demo_files');
+            if (saved) {
+                try {
+                    currentFiles = JSON.parse(saved);
+                } catch(e) {
+                    currentFiles = { ...DEFAULT_FILES };
+                }
+            } else {
+                currentFiles = { ...DEFAULT_FILES };
+            }
+
+            // Bind editor input event
+            const editor = document.getElementById('code-editor');
+            editor.value = currentFiles[activeFile] || '';
+            editor.addEventListener('input', handleEditorInput);
+            editor.addEventListener('keydown', handleEditorKeydown);
+
+            updateEditorCharCounter();
+            runLiveCode();
+            initConsoleInterceptor();
+
+            // Hash routing support
+            window.addEventListener('hashchange', handleHashRoute);
+            if (window.location.hash) {
+                handleHashRoute();
+            }
+        }
+
+        /**
+         * Navigation Tab Switcher
+         */
+        function switchAppTab(tabName) {
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+            
+            const targetView = document.getElementById('view-' + tabName);
+            if (targetView) targetView.classList.remove('hidden');
+
+            // Update nav styling
+            document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+                btn.className = 'nav-tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white';
+            });
+            const activeBtn = document.getElementById('nav-btn-' + tabName);
+            if (activeBtn) {
+                activeBtn.className = 'nav-tab-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors bg-brand-50 text-brand-700 dark:bg-brand-950/70 dark:text-brand-300';
+            }
+
+            if (tabName === 'studio') {
+                runLiveCode();
+            }
+        }
+
+        function handleHashRoute() {
+            const hash = window.location.hash.replace('#', '');
+            if (['studio', 'preview', 'lessons', 'security'].includes(hash)) {
+                switchAppTab(hash);
+            }
+        }
+
+        /**
+         * Code Editor & File Management
+         */
+        function switchCodeFile(filename) {
+            // Save current editor content to state
+            currentFiles[activeFile] = document.getElementById('code-editor').value;
+            saveFilesToStorage();
+
+            activeFile = filename;
+            document.getElementById('code-editor').value = currentFiles[activeFile] || '';
+            document.getElementById('editor-active-file-indicator').innerHTML = `<i class="fa-regular fa-file-code text-brand-500"></i> ${filename}`;
+
+            // Language tag
+            let lang = 'HTML';
+            if (filename.endsWith('.css')) lang = 'CSS';
+            if (filename.endsWith('.js')) lang = 'JAVASCRIPT';
+            if (filename.endsWith('.md')) lang = 'MARKDOWN';
+            document.getElementById('status-language-tag').textContent = lang;
+
+            // Highlight active tab
+            document.querySelectorAll('.file-tab').forEach(tab => {
+                tab.className = 'file-tab inline-flex items-center gap-2 px-3 py-2 rounded-t-lg font-mono text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition';
+            });
+            const curTab = document.getElementById('file-tab-' + filename);
+            if (curTab) {
+                curTab.className = 'file-tab active inline-flex items-center gap-2 px-3 py-2 rounded-t-lg font-mono text-xs font-semibold bg-white dark:bg-slate-900 text-brand-600 dark:text-brand-400 border-t-2 border-brand-500 border-x border-slate-200 dark:border-slate-800 shadow-sm';
+            }
+
+            updateEditorCharCounter();
+        }
+
+        function handleEditorInput(e) {
+            currentFiles[activeFile] = e.target.value;
+            saveFilesToStorage();
+            updateEditorCharCounter();
+        }
+
+        function handleEditorKeydown(e) {
+            // Enable Tab key indentation
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+                currentFiles[activeFile] = this.value;
+                saveFilesToStorage();
+            }
+            // Ctrl + S / Cmd + S to Run
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                runLiveCode();
+                showToast("Code executed successfully!", "fa-play");
+            }
+            // Ctrl + Enter to Run
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                runLiveCode();
+                showToast("Code executed successfully!", "fa-play");
+            }
+        }
+
+        function updateEditorCharCounter() {
+            const count = (document.getElementById('code-editor').value || '').length;
+            document.getElementById('editor-char-counter').textContent = `${count} chars`;
+        }
+
+        function saveFilesToStorage() {
+            localStorage.setItem('html_demo_files', JSON.stringify(currentFiles));
+        }
+
+        function resetCurrentFileToDefault() {
+            if (confirm(`Reset ${activeFile} to repository master default?`)) {
+                currentFiles[activeFile] = DEFAULT_FILES[activeFile] || '';
+                document.getElementById('code-editor').value = currentFiles[activeFile];
+                saveFilesToStorage();
+                updateEditorCharCounter();
+                runLiveCode();
+                showToast(`${activeFile} reset to default`, "fa-rotate-left");
+            }
+        }
+
+        function copyCodeToClipboard() {
+            const code = document.getElementById('code-editor').value;
+            navigator.clipboard.writeText(code).then(() => {
+                showToast("Code copied to clipboard!", "fa-copy");
+            });
+        }
+
+        function formatActiveCode() {
+            let code = document.getElementById('code-editor').value;
+            // Simple neat clean formatter
+            if (activeFile.endsWith('.css') || activeFile.endsWith('.js') || activeFile.endsWith('.html')) {
+                code = code.replace(/\n\s*\n\s*\n/g, '\n\n');
+                document.getElementById('code-editor').value = code;
+                currentFiles[activeFile] = code;
+                saveFilesToStorage();
+                showToast("Code formatted", "fa-wand-magic-sparkles");
+            }
+        }
+
+        function loadPresetTemplate(presetKey) {
+            const preset = PRESET_TEMPLATES[presetKey];
+            if (!preset) return;
+            if (confirm(`Load "${presetKey}" template into workspace? Current unsaved edits will be updated.`)) {
+                Object.assign(currentFiles, preset);
+                document.getElementById('code-editor').value = currentFiles[activeFile] || '';
+                saveFilesToStorage();
+                updateEditorCharCounter();
+                runLiveCode();
+                showToast(`Preset "${presetKey}" loaded!`, "fa-cubes");
+            }
+        }
+
+        /**
+         * Sandbox Compiler & Live Execution Engine
+         */
+        function runLiveCode() {
+            const iframe = document.getElementById('live-preview-frame');
+            if (!iframe) return;
+
+            // Prepare consolidated HTML document
+            const rawHtml = currentFiles['index.html'] || DEFAULT_FILES['index.html'];
+            const css = currentFiles['styles.css'] || '';
+            const js = currentFiles['script.js'] || '';
+
+            // Inject console bridge & custom alert capture
+            const bridgeScript = `
+                <script>
+                    (function() {
+                        const _origLog = console.log;
+                        const _origWarn = console.warn;
+                        const _origError = console.error;
+                        const _origAlert = window.alert;
+
+                        console.log = function(...args) {
+                            window.parent.postMessage({ type: 'CONSOLE_LOG', level: 'log', message: args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ') }, '*');
+                            _origLog.apply(console, args);
+                        };
+                        console.warn = function(...args) {
+                            window.parent.postMessage({ type: 'CONSOLE_LOG', level: 'warn', message: args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ') }, '*');
+                            _origWarn.apply(console, args);
+                        };
+                        console.error = function(...args) {
+                            window.parent.postMessage({ type: 'CONSOLE_LOG', level: 'error', message: args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ') }, '*');
+                            _origError.apply(console, args);
+                        };
+                        window.alert = function(msg) {
+                            window.parent.postMessage({ type: 'CONSOLE_ALERT', message: String(msg) }, '*');
+                            _origAlert(msg);
+                        };
+                    })();
+                <\/script>
+            `;
+
+            // Insert CSS into <head> and JS before </body>
+            let bundle = rawHtml;
+
+            // Inject CSS
+            const styleTag = `<style>\n${css}\n</style>`;
+            if (bundle.includes('</head>')) {
+                bundle = bundle.replace('</head>', `${styleTag}\n${bridgeScript}\n</head>`);
+            } else {
+                bundle = `<head>${styleTag}${bridgeScript}</head>` + bundle;
+            }
+
+            // Inject JS
+            const scriptTag = `<script>\ntry {\n${js}\n} catch(err) { console.error(err.message); }\n<\/script>`;
+            if (bundle.includes('</body>')) {
+                bundle = bundle.replace('</body>', `${scriptTag}\n</body>`);
+            } else {
+                bundle = bundle + scriptTag;
+            }
+
+            // Write to IFrame
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(bundle);
+            iframeDoc.close();
+
+            logToConsole(`[Compiler] Bundle compiled successfully at ${new Date().toLocaleTimeString()}`, 'system');
+        }
+
+        function reloadPreviewFrame() {
+            runLiveCode();
+            showToast("Sandbox reloaded", "fa-arrows-rotate");
+        }
+
+        function openPreviewInNewWindow() {
+            const rawHtml = currentFiles['index.html'] || DEFAULT_FILES['index.html'];
+            const css = currentFiles['styles.css'] || '';
+            const js = currentFiles['script.js'] || '';
+            const bundle = rawHtml.replace('</head>', `<style>${css}</style></head>`).replace('</body>', `<script>${js}<\/script></body>`);
+
+            const win = window.open();
+            win.document.write(bundle);
+            win.document.close();
+        }
+
+        function setPreviewDevice(device) {
+            const container = document.getElementById('preview-container');
+            const frame = document.getElementById('live-preview-frame');
+            ['btn-device-desktop', 'btn-device-tablet', 'btn-device-mobile'].forEach(id => {
+                document.getElementById(id).className = 'p-1.5 hover:text-brand-600 rounded';
+            });
+            document.getElementById('btn-device-' + device).className = 'p-1.5 hover:text-brand-600 rounded bg-slate-200/60 dark:bg-slate-800 text-brand-600 dark:text-brand-400';
+
+            if (device === 'mobile') {
+                frame.style.maxWidth = '375px';
+                frame.style.height = '100%';
+            } else if (device === 'tablet') {
+                frame.style.maxWidth = '768px';
+                frame.style.height = '100%';
+            } else {
+                frame.style.maxWidth = '100%';
+                frame.style.height = '100%';
+            }
+        }
+
+        /**
+         * Integrated Console Logger
+         */
+        function initConsoleInterceptor() {
+            window.addEventListener('message', (event) => {
+                if (!event.data) return;
+                if (event.data.type === 'CONSOLE_LOG') {
+                    logToConsole(event.data.message, event.data.level);
+                } else if (event.data.type === 'CONSOLE_ALERT') {
+                    logToConsole(`[window.alert] ${event.data.message}`, 'alert');
+                }
+            });
+        }
+
+        function logToConsole(message, type = 'log') {
+            const list = document.getElementById('console-logs-list');
+            const item = document.createElement('div');
+            item.className = 'py-0.5 truncate flex items-start gap-1.5';
+
+            let icon = '<i class="fa-solid fa-angle-right text-slate-500 mt-0.5"></i>';
+            let color = 'text-slate-200';
+
+            if (type === 'error') {
+                icon = '<i class="fa-solid fa-circle-exclamation text-rose-500 mt-0.5"></i>';
+                color = 'text-rose-400 font-semibold';
+            } else if (type === 'warn') {
+                icon = '<i class="fa-solid fa-triangle-exclamation text-amber-400 mt-0.5"></i>';
+                color = 'text-amber-300';
+            } else if (type === 'system') {
+                icon = '<i class="fa-solid fa-gear text-brand-400 mt-0.5"></i>';
+                color = 'text-brand-400';
+            } else if (type === 'alert') {
+                icon = '<i class="fa-solid fa-bell text-yellow-400 mt-0.5"></i>';
+                color = 'text-yellow-300';
+            }
+
+            item.innerHTML = `${icon}<span class="${color}">${escapeHtml(message)}</span>`;
+            list.appendChild(item);
+            list.scrollTop = list.scrollHeight;
+
+            consoleLogs.push({ message, type });
+            document.getElementById('console-badge-count').textContent = `${consoleLogs.length} logs`;
+        }
+
+        function clearConsoleLog() {
+            consoleLogs = [];
+            document.getElementById('console-logs-list').innerHTML = `<div class="text-slate-500 italic text-[11px]">// Console cleared.</div>`;
+            document.getElementById('console-badge-count').textContent = `0 logs`;
+        }
+
+        function handleConsoleSubmit(e) {
+            e.preventDefault();
+            executeConsoleCustomInput();
+        }
+
+        function executeConsoleCustomInput() {
+            const input = document.getElementById('console-input');
+            const code = input.value.trim();
+            if (!code) return;
+
+            logToConsole(`> ${code}`, 'log');
+            try {
+                const result = eval(code);
+                logToConsole(`<- ${result !== undefined ? result : 'undefined'}`, 'system');
+            } catch(err) {
+                logToConsole(`Error: ${err.message}`, 'error');
+            }
+            input.value = '';
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"');
+        }
+
+        /**
+         * Standalone Original Master View Customizers
+         */
+        function updateOriginalDemoStyles() {
+            const headerColor = document.getElementById('ctrl-header-color').value;
+            const footerColor = document.getElementById('ctrl-footer-color').value;
+            
+            document.getElementById('ctrl-header-color-text').value = headerColor;
+            document.getElementById('ctrl-footer-color-text').value = footerColor;
+
+            document.getElementById('demo-rendered-header').style.backgroundColor = headerColor;
+            document.getElementById('demo-rendered-footer').style.backgroundColor = footerColor;
+        }
+
+        function syncColorInput(val, pickerId) {
+            if (/^#[0-9A-F]{6}$/i.test(val)) {
+                document.getElementById(pickerId).value = val;
+                updateOriginalDemoStyles();
+            }
+        }
+
+        function updateOriginalDemoContent() {
+            const title = document.getElementById('ctrl-site-title').value;
+            document.getElementById('demo-rendered-title').textContent = title || 'Site Title';
+        }
+
+        function triggerOriginalAlert() {
+            alert("Welcome to Your Page!");
+        }
+
+        function resetOriginalDemo() {
+            document.getElementById('ctrl-header-color').value = '#4CAF50';
+            document.getElementById('ctrl-header-color-text').value = '#4CAF50';
+            document.getElementById('ctrl-footer-color').value = '#333333';
+            document.getElementById('ctrl-footer-color-text').value = '#333333';
+            document.getElementById('ctrl-site-title').value = 'Site Title';
+
+            updateOriginalDemoStyles();
+            updateOriginalDemoContent();
+            showToast("Original demo reset", "fa-rotate-left");
+        }
+
+        /**
+         * Fundamentals Lessons Sub-tabs
+         */
+        function switchLessonSubtab(subtab) {
+            ['html', 'css', 'js'].forEach(tab => {
+                document.getElementById('lesson-tab-' + tab).classList.add('hidden');
+                document.getElementById('btn-lesson-' + tab).className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300';
+            });
+            document.getElementById('lesson-tab-' + subtab).classList.remove('hidden');
+            document.getElementById('btn-lesson-' + subtab).className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-600 text-white';
+        }
+
+        function applyShadowStep(val) {
+            const box = document.getElementById('demo-css-box');
+            const lbl = document.getElementById('lbl-shd-val');
+            box.classList.remove('shadow-none', 'shadow-sm', 'shadow-md', 'shadow-2xl');
+            if (val == 0) { box.classList.add('shadow-none'); lbl.textContent = 'None'; }
+            if (val == 1) { box.classList.add('shadow-sm'); lbl.textContent = 'Small'; }
+            if (val == 2) { box.classList.add('shadow-md'); lbl.textContent = 'Medium'; }
+            if (val == 3) { box.classList.add('shadow-2xl'); lbl.textContent = 'Extra Large'; }
+        }
+
+        function triggerJsDemoEvent(eventType) {
+            const stream = document.getElementById('js-event-stream');
+            const item = document.createElement('div');
+            const ts = new Date().toLocaleTimeString();
+
+            if (eventType === 'click') {
+                item.textContent = `[${ts}] Event 'click' fired on button element.`;
+            } else if (eventType === 'fetch') {
+                item.textContent = `[${ts}] HTTP GET request dispatched -> 200 OK (Payload loaded).`;
+            } else if (eventType === 'time') {
+                item.textContent = `[${ts}] Current Date: ${new Date().toISOString()}`;
+            }
+
+            stream.appendChild(item);
+            stream.scrollTop = stream.scrollHeight;
+        }
+
+        /**
+         * Security Policy Submission Handler
+         */
+        function handleVulnerabilitySubmit(e) {
+            e.preventDefault();
+            const ver = document.getElementById('vuln-version').value;
+            const sev = document.getElementById('vuln-severity').value;
+            const details = document.getElementById('vuln-details').value;
+
+            const feedback = document.getElementById('vuln-feedback-msg');
+            feedback.innerHTML = `<strong>Advisory Received:</strong> Thank you for your responsible disclosure on branch <code>${ver}</code> [Severity: ${sev}]. The report ID is <code>SEC-${Math.floor(1000 + Math.random() * 9000)}</code>.`;
+            feedback.classList.remove('hidden');
+
+            document.getElementById('vuln-details').value = '';
+            showToast("Security advisory dispatched!", "fa-shield-halved");
+        }
+
+        function copyCloneCommand() {
+            navigator.clipboard.writeText('git clone https://github.com/mdkeum/HTML-CSS-JS-Demo.git').then(() => {
+                showToast("Clone command copied!", "fa-copy");
+            });
+        }
+
+        /**
+         * Real Single File & ZIP Exporter
+         */
+        function downloadSingleFile(filename) {
+            const content = currentFiles[filename] || DEFAULT_FILES[filename] || '';
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast(`Downloaded ${filename}`, "fa-download");
+        }
+
+        async function downloadProjectZip() {
+            showToast("Generating ZIP bundle...", "fa-spinner fa-spin");
+            try {
+                const zip = new JSZip();
+                const folder = zip.folder("HTML-CSS-JS-Demo");
+
+                // Add all files
+                for (const [name, content] of Object.entries(currentFiles)) {
+                    folder.file(name, content);
+                }
+
+                // Add .gitignore
+                folder.file('.gitignore', `# Node / OS ignores
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+dist/
+build/`);
+
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                const url = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "HTML-CSS-JS-Demo-master.zip";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast("HTML-CSS-JS-Demo-master.zip ready!", "fa-circle-check");
+            } catch(err) {
+                console.error(err);
+                showToast("Failed to generate ZIP", "fa-triangle-exclamation");
+            }
+        }
+
+        /**
+         * Dark Mode Toggle
+         */
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme_mode', isDark ? 'dark' : 'light');
+        }
+
+        if (localStorage.getItem('theme_mode') === 'dark' || (!localStorage.getItem('theme_mode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        /**
+         * Toast Notification Helper
+         */
+        let toastTimeout;
+        function showToast(msg, iconClass = "fa-check-circle") {
+            const toast = document.getElementById('app-toast');
+            document.getElementById('toast-msg').textContent = msg;
+            document.getElementById('toast-icon').className = `fa-solid ${iconClass} text-brand-400 dark:text-brand-600 text-base`;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize on DOM Ready
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
