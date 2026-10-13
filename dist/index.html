@@ -1,12 +1,254 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Broken Project</title>
-  <!-- Missing Tailwind or script -->
-</head>
-<body class="bg-black text-white">
-  <div id="root">Loading...</div>
-  <script src="/src/App.jsx"></script>
+    <head>
+
+    <!-- Universal Framework & Styling CDNs -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+
+    <!-- Universal Virtual Runtime & Module Bundler -->
+    <script>
+      (function() {
+        window.__VIRTUAL_MODULES__ = {"script.js":"\"use strict\";\n\nwindow.onload = function () {\n  alert(\"Welcome to Your Page!\");\n};","script":"\"use strict\";\n\nwindow.onload = function () {\n  alert(\"Welcome to Your Page!\");\n};"};
+        window.__CSS_MODULES__ = {"styles.css":"body {\n    font-family: Arial, sans-serif;\n    margin: 0;\n    padding: 0;\n}\n\nheader {\n    background-color: #4CAF50;\n    color: white;\n    padding: 10px 0;\n    text-align: center;\n}\n\nfooter {\n    background-color: #333;\n    color: white;\n    padding: 5px 0;\n    text-align: center;\n    position: fixed;\n    width: 100%;\n    bottom: 0;\n}\n"};
+        window.__PROJECT_PAGES__ = {"index.html":"<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n        <meta name=\"description\" content=\"A brief description of the page.\">\n        <title>Page Title</title>\n        <link rel=\"stylesheet\" href=\"styles.css\"> \n    </head>\n    <body>\n        <header>\n            <h1>Site Title</h1>\n        </header>\n        \n        <main>\n            <h2>Welcome to My Page!</h2>\n            <p>This is a sample paragraph. You can replace this with your content.</p>\n        </main>\n    \n        <footer>\n            <p>&copy; 2024 Your Name. All rights reserved.</p>\n        </footer>\n    \n        <script src=\"script.js\"><\/script> \n    </body>\n\n</html>\n"};
+        window.__FILE_MAP__ = {"README.md":"# HTML-CSS-JS-Demo-Project\n\n**HTML-CSS-JS-Demo** is a basic web development project that demonstrates the fundamental concepts of HTML, CSS, and JavaScript. It includes a simple webpage layout with separate HTML, CSS, and JavaScript files, making it a great starting point for learning web development.\n\n## Features\n\n- **HTML**: Basic structure for a webpage with header, main content, and footer.\n- **CSS**: External CSS file for styling the page, including layout adjustments and basic styles.\n- **JavaScript**: A sample JavaScript file that can be expanded to add dynamic functionality.\n\n## Project Structure\nHTML-CSS-JS-Demo/ │ ├── index.html # Main HTML file ├── styles.css # External CSS file for styling ├── script.js # External JavaScript file for interactivity └── README.md # This file (Project description and documentation)\n\n## Getting Started\n\nTo get started with this project locally, follow these steps:\n\n1. **Clone the repository**:\n   ```\n   git clone https://github.com/mdkeum/HTML-CSS-JS-Demo.git\n   ```\n   \n2. **Navigate to the project folder**:\n  ```\n  cd HTML-CSS-JS-Demo\n  ```\n3. **Open the index.html file in your browser**:\n\nYou can open the index.html file directly in your web browser to view the webpage.\n4. **Edit the files**:\n\nModify the HTML, CSS, and JavaScript files to customize the page as needed.\nThe HTML provides the structure, the CSS handles the styling, and the JavaScript file is ready to be updated with any interactive features.\n## Example Usage\nCSS Styling: Modify the styles.css file to change the design of the webpage (colors, fonts, layout).\nJavaScript: Update the script.js file to add interactivity, such as form validation or dynamic content changes.\n## Contributing\nIf you'd like to contribute to this project, feel free to fork the repository and submit pull requests. Improvements, bug fixes, and new features are always welcome!\n\n## License\nThis project is open-source and available under the MIT License.\n## Author\nMd. Keum\n\n\n---\n\n### Key Notes:\n- **Project Overview**: The `README.md` starts with a brief description of what the project is and its purpose. It sets the stage for anyone unfamiliar with the project.\n- **Usage**: Instructions on how to clone and use the project locally.\n- **Contributing**: An invitation for others to contribute to the project, which is common for open-source projects.\n- **License**: Typically, open-source projects have a license, and you can add the [MIT License](https://opensource.org/licenses/MIT) or any other license you prefer.\n\nFeel free to adjust the instructions and details according to your needs! If you have any other questions or need further assistance with your GitHub setup, let me know!\n\n\n\n","readme.md":"# HTML-CSS-JS-Demo-Project\n\n**HTML-CSS-JS-Demo** is a basic web development project that demonstrates the fundamental concepts of HTML, CSS, and JavaScript. It includes a simple webpage layout with separate HTML, CSS, and JavaScript files, making it a great starting point for learning web development.\n\n## Features\n\n- **HTML**: Basic structure for a webpage with header, main content, and footer.\n- **CSS**: External CSS file for styling the page, including layout adjustments and basic styles.\n- **JavaScript**: A sample JavaScript file that can be expanded to add dynamic functionality.\n\n## Project Structure\nHTML-CSS-JS-Demo/ │ ├── index.html # Main HTML file ├── styles.css # External CSS file for styling ├── script.js # External JavaScript file for interactivity └── README.md # This file (Project description and documentation)\n\n## Getting Started\n\nTo get started with this project locally, follow these steps:\n\n1. **Clone the repository**:\n   ```\n   git clone https://github.com/mdkeum/HTML-CSS-JS-Demo.git\n   ```\n   \n2. **Navigate to the project folder**:\n  ```\n  cd HTML-CSS-JS-Demo\n  ```\n3. **Open the index.html file in your browser**:\n\nYou can open the index.html file directly in your web browser to view the webpage.\n4. **Edit the files**:\n\nModify the HTML, CSS, and JavaScript files to customize the page as needed.\nThe HTML provides the structure, the CSS handles the styling, and the JavaScript file is ready to be updated with any interactive features.\n## Example Usage\nCSS Styling: Modify the styles.css file to change the design of the webpage (colors, fonts, layout).\nJavaScript: Update the script.js file to add interactivity, such as form validation or dynamic content changes.\n## Contributing\nIf you'd like to contribute to this project, feel free to fork the repository and submit pull requests. Improvements, bug fixes, and new features are always welcome!\n\n## License\nThis project is open-source and available under the MIT License.\n## Author\nMd. Keum\n\n\n---\n\n### Key Notes:\n- **Project Overview**: The `README.md` starts with a brief description of what the project is and its purpose. It sets the stage for anyone unfamiliar with the project.\n- **Usage**: Instructions on how to clone and use the project locally.\n- **Contributing**: An invitation for others to contribute to the project, which is common for open-source projects.\n- **License**: Typically, open-source projects have a license, and you can add the [MIT License](https://opensource.org/licenses/MIT) or any other license you prefer.\n\nFeel free to adjust the instructions and details according to your needs! If you have any other questions or need further assistance with your GitHub setup, let me know!\n\n\n\n","SECURITY.md":"# Security Policy\n\n## Supported Versions\n\nUse this section to tell people about which versions of your project are\ncurrently being supported with security updates.\n\n| Version | Supported          |\n| ------- | ------------------ |\n| 5.1.x   | :white_check_mark: |\n| 5.0.x   | :x:                |\n| 4.0.x   | :white_check_mark: |\n| < 4.0   | :x:                |\n\n## Reporting a Vulnerability\n\nUse this section to tell people how to report a vulnerability.\n\nTell them where to go, how often they can expect to get an update on a\nreported vulnerability, what to expect if the vulnerability is accepted or\ndeclined, etc.\n","security.md":"# Security Policy\n\n## Supported Versions\n\nUse this section to tell people about which versions of your project are\ncurrently being supported with security updates.\n\n| Version | Supported          |\n| ------- | ------------------ |\n| 5.1.x   | :white_check_mark: |\n| 5.0.x   | :x:                |\n| 4.0.x   | :white_check_mark: |\n| < 4.0   | :x:                |\n\n## Reporting a Vulnerability\n\nUse this section to tell people how to report a vulnerability.\n\nTell them where to go, how often they can expect to get an update on a\nreported vulnerability, what to expect if the vulnerability is accepted or\ndeclined, etc.\n","index.html":"<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n        <meta name=\"description\" content=\"A brief description of the page.\">\n        <title>Page Title</title>\n        <link rel=\"stylesheet\" href=\"styles.css\"> \n    </head>\n    <body>\n        <header>\n            <h1>Site Title</h1>\n        </header>\n        \n        <main>\n            <h2>Welcome to My Page!</h2>\n            <p>This is a sample paragraph. You can replace this with your content.</p>\n        </main>\n    \n        <footer>\n            <p>&copy; 2024 Your Name. All rights reserved.</p>\n        </footer>\n    \n        <script src=\"script.js\"><\/script> \n    </body>\n\n</html>\n","script.js":"window.onload = function() {\n    alert(\"Welcome to Your Page!\");\n};\n","styles.css":"body {\n    font-family: Arial, sans-serif;\n    margin: 0;\n    padding: 0;\n}\n\nheader {\n    background-color: #4CAF50;\n    color: white;\n    padding: 10px 0;\n    text-align: center;\n}\n\nfooter {\n    background-color: #333;\n    color: white;\n    padding: 5px 0;\n    text-align: center;\n    position: fixed;\n    width: 100%;\n    bottom: 0;\n}\n"};
+
+        // Monitor runtime errors
+        window.addEventListener('error', function(e) {
+          window.parent.postMessage({ type: 'PREVIEW_ERROR', message: e.message, line: e.lineno }, '*');
+        });
+        window.addEventListener('unhandledrejection', function(e) {
+          window.parent.postMessage({ type: 'PREVIEW_ERROR', message: 'Unhandled promise rejection: ' + e.reason }, '*');
+        });
+
+        const moduleCache = {};
+
+        function universalRequire(id, fromDir) {
+          if (!id) return {};
+
+          // A. Standard External Libraries
+          if (id === 'react') return window.React || {};
+          if (id === 'react-dom' || id === 'react-dom/client') return window.ReactDOM || {};
+          if (id === 'react/jsx-runtime' || id === 'react/jsx-dev-runtime') {
+            return {
+              jsx: window.React ? window.React.createElement : function() {},
+              jsxs: window.React ? window.React.createElement : function() {},
+              Fragment: window.React ? window.React.Fragment : null
+            };
+          }
+          if (id === 'lucide-react') {
+            return new Proxy({}, {
+              get: function(_, prop) {
+                return function LucideIcon(props) {
+                  return window.React ? window.React.createElement('span', {
+                    ...props,
+                    className: 'inline-flex items-center justify-center font-bold text-xs ' + (props.className || '')
+                  }, '★') : null;
+                };
+              }
+            });
+          }
+
+          // B. CSS Import: Inject style directly
+          if (id.endsWith('.css')) {
+            const cleanCss = id.replace(/^(./|/)+/, '');
+            const cssContent = window.__CSS_MODULES__[cleanCss] || window.__CSS_MODULES__[id] || window.__CSS_MODULES__[cleanCss.split('/').pop()];
+            if (cssContent) {
+              const style = document.createElement('style');
+              style.setAttribute('data-injected', id);
+              style.textContent = cssContent;
+              document.head.appendChild(style);
+            }
+            return {};
+          }
+
+          // C. JSON Import
+          if (id.endsWith('.json')) {
+            const cleanJson = id.replace(/^(./|/)+/, '');
+            const jsonText = window.__FILE_MAP__[cleanJson] || window.__FILE_MAP__[id];
+            if (jsonText) {
+              try { return JSON.parse(jsonText); } catch { return {}; }
+            }
+          }
+
+          // D. Local Module Resolution
+          const cleanId = id.replace(/^(./|/)+/, '');
+          const candidates = [
+            cleanId,
+            id,
+            fromDir ? fromDir + '/' + cleanId : '',
+            cleanId + '.tsx', cleanId + '.jsx', cleanId + '.ts', cleanId + '.js',
+            fromDir ? fromDir + '/' + cleanId + '.tsx' : '',
+            fromDir ? fromDir + '/' + cleanId + '.jsx' : '',
+            fromDir ? fromDir + '/' + cleanId + '.ts' : '',
+            fromDir ? fromDir + '/' + cleanId + '.js' : '',
+            cleanId + '/index.tsx', cleanId + '/index.jsx', cleanId + '/index.js', cleanId + '/index.ts',
+            cleanId.split('/').pop() || ''
+          ].filter(Boolean);
+
+          for (const cand of candidates) {
+            const code = window.__VIRTUAL_MODULES__[cand];
+            if (code) {
+              if (moduleCache[cand]) return moduleCache[cand].exports;
+              const mod = { exports: {} };
+              moduleCache[cand] = mod;
+              const nextDir = cand.includes('/') ? cand.substring(0, cand.lastIndexOf('/')) : '';
+              try {
+                const fn = new Function('require', 'module', 'exports', 'React', 'ReactDOM', code);
+                fn(function(childId) { return universalRequire(childId, nextDir); }, mod, mod.exports, window.React, window.ReactDOM);
+                return mod.exports;
+              } catch (execErr) {
+                console.error('[Virtual Bundler] Error executing ' + cand + ':', execErr);
+                return mod.exports;
+              }
+            }
+          }
+
+          // Safe mock proxy fallback for unknown npm modules
+          console.warn('[Virtual Bundler] Library not found: "' + id + '", providing safe mock');
+          return new Proxy(function() {}, {
+            get: function() { return function() { return null; }; }
+          });
+        }
+
+        window.require = function(id) { return universalRequire(id, ''); };
+
+        window.__RUN_MODULE__ = function(entryPath) {
+          try {
+            const mod = universalRequire(entryPath, '');
+            const Component = mod.default || mod.App || mod.Main || mod;
+            if (typeof Component === 'function' && window.React && window.ReactDOM) {
+              const rootEl = document.getElementById('root') || document.getElementById('app') || document.body;
+              if (window.ReactDOM.createRoot) {
+                const root = window.ReactDOM.createRoot(rootEl);
+                root.render(window.React.createElement(Component));
+              } else if (window.ReactDOM.render) {
+                window.ReactDOM.render(window.React.createElement(Component), rootEl);
+              }
+            }
+          } catch (err) {
+            console.error('[Virtual Bundler] Failed to run entry ' + entryPath + ':', err);
+          }
+        };
+
+        // Universal Link Router for active navigation
+        document.addEventListener('click', function(e) {
+          const link = e.target.closest('a');
+          if (!link) return;
+          const href = link.getAttribute('href');
+          if (!href || href === '#' || href.startsWith('javascript:')) return;
+
+          if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//')) {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+            return;
+          }
+
+          if (href.startsWith('#')) {
+            const targetId = href.slice(1);
+            const targetEl = document.getElementById(targetId) || document.querySelector('[name="' + targetId + '"]');
+            if (targetEl) {
+              e.preventDefault();
+              targetEl.scrollIntoView({ behavior: 'smooth' });
+            }
+            return;
+          }
+
+          if (window.location.pathname.includes('/site/')) return;
+
+          e.preventDefault();
+          const clean = href.split('?')[0].split('#')[0].replace(/^(./)+/, '');
+          let pageHtml = window.__PROJECT_PAGES__[clean] || window.__PROJECT_PAGES__[clean.split('/').pop() || ''];
+          if (pageHtml) {
+            document.open();
+            document.write(pageHtml);
+            document.close();
+            window.scrollTo(0, 0);
+          }
+        }, true);
+
+        // Auto-mount React App if container is empty
+        window.addEventListener('DOMContentLoaded', function() {
+          const rootEl = document.getElementById('root') || document.getElementById('app');
+          if (rootEl && rootEl.children.length === 0) {
+            const appKeys = Object.keys(window.__VIRTUAL_MODULES__).filter(k => 
+              k.toLowerCase().includes('main') || k.toLowerCase().includes('app') || k.toLowerCase().includes('index')
+            );
+            for (const k of appKeys) {
+              try {
+                const mod = universalRequire(k, '');
+                const Component = mod.default || mod.App || mod.Main || mod;
+                if (typeof Component === 'function' && window.React && window.ReactDOM) {
+                  if (window.ReactDOM.createRoot) {
+                    const root = window.ReactDOM.createRoot(rootEl);
+                    root.render(window.React.createElement(Component));
+                  } else {
+                    window.ReactDOM.render(window.React.createElement(Component), rootEl);
+                  }
+                  break;
+                }
+              } catch (e) {}
+            }
+          }
+        });
+      })();
+    </script>
+  
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A brief description of the page.">
+        <title>Page Title</title>
+        <style data-source="styles.css">
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 5px 0;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+</style> 
+    </head>
+    <body>
+        <header>
+            <h1>Site Title</h1>
+        </header>
+        
+        <main>
+            <h2>Welcome to My Page!</h2>
+            <p>This is a sample paragraph. You can replace this with your content.</p>
+        </main>
+    
+        <footer>
+            <p>&copy; 2024 Your Name. All rights reserved.</p>
+        </footer>
+    
+        <script  >
+window.onload = function() {
+    alert("Welcome to Your Page!");
+};
+
+</script> 
+      <div id="root"></div>
 </body>
+
 </html>
